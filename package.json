@@ -30,6 +30,8 @@
     "ethers": "^6.3.0",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
+    "superjson": "^1.12.2",
+    "trpc-openapi": "^1.1.2",
     "ts-node": "^10.3.0",
     "tsc": "^2.0.4",
     "typescript": "^5.0.4",

@@ -1,1 +1,1 @@
-export const getNetwork = () => {}
+export const getEnv = () => {}
