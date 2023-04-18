@@ -1,3 +1,4 @@
+import { createSafeFactory } from './safe/SafeFactory'
 import { router, publicProcedure } from './server/trpc'
 import { createHTTPServer } from '@trpc/server/adapters/standalone'
 
@@ -14,7 +15,10 @@ const appRouter = router({
 
 createHTTPServer({
   router: appRouter,
-  createContext() {
-    return {}
+  async createContext() {
+    const safeFactory = await createSafeFactory()
+    return {
+      safeFactory
+    }
   }
 }).listen(2022)
