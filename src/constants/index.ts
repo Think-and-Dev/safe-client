@@ -4,10 +4,10 @@ export const MUMBAI_EXPLORER = process.env.MUMBAI_EXPLORER || 'https://mumbai.po
 export const POLYGON_EXPLORER = process.env.POLYGON_EXPLORER || 'https://polygonscan.com/'
 
 export enum NETWORKS {
-  MAINNET,
-  GOERLI,
-  MUMBAI,
-  POLYGON
+  MAINNET = 'MAINNET',
+  GOERLI = 'GOERLI',
+  MUMBAI = 'MUMBAI',
+  POLYGON = 'POLYGON'
 }
 
 export const NETWORK_NAMES = new Map([
