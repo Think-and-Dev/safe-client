@@ -1,9 +1,12 @@
-import { router, publicProcedure } from './server/trpc'
-import * as trpcExpress from '@trpc/server/adapters/express'
 import express from 'express'
+import * as trpcExpress from '@trpc/server/adapters/express'
 
-import { createSafeFactory } from './safe/SafeFactory'
+import { router, publicProcedure } from './server/trpc'
 import { createContext } from './server/context'
+import { getAdapter } from './safe/EthersAdapater'
+import { getSafeService } from './safe/SafeApiKit'
+import { createSafeFactory } from './safe/SafeFactory'
+import SafeSDK from './safe/SafeSDK'
 
 export type AppRouter = typeof appRouter
 
@@ -14,7 +17,6 @@ const appRouter = router({
       throw new Error(`Invalid input: ${typeof val}`)
     })
     .query((req: any) => {
-      console.log('ME METO ACAA!!!')
       const whoToGreet = req.input
       return {
         id: req.input,
@@ -23,8 +25,16 @@ const appRouter = router({
     })
 })
 
+export const adapter = getAdapter()
+export const safeService = getSafeService(adapter)
+export const safeFactory = createSafeFactory(adapter)
+export const safeSDK = SafeSDK.getInstance()
+
 async function server() {
+  await safeSDK.initSDK(adapter, '0x38d8D1Cd4670AaCd61BAA1845003e97cDC42791a')
+
   const app = express()
+
   app.use((req, _res, next) => {
     // request logger
     console.log('⬅️ ', req.method, req.path, req.body ?? req.query)

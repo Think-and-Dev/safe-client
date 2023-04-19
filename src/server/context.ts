@@ -1,6 +1,7 @@
 import { createSafeFactory } from '../safe/SafeFactory'
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcExpress from '@trpc/server/adapters/express'
+import { getAdapter } from '../safe/EthersAdapater'
 
 /** 
 export const createContext = async (opts: CreateNextContextOptions) => {
@@ -14,7 +15,6 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 
 // created for each request
 export const createContext = async ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
-  console.log('HOLA')
   return { message: 'HOLA' }
 }
 
