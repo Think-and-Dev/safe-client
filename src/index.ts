@@ -8,6 +8,8 @@ import { getSafeService } from './safe/SafeApiKit'
 import { createSafeFactory } from './safe/SafeFactory'
 import SafeSDK from './safe/SafeSDK'
 
+import { SafeTransactionDataSchema, SafeTransactionOutputSchema } from './config/schema'
+
 export type AppRouter = typeof appRouter
 
 const appRouter = router({
@@ -35,17 +37,54 @@ const appRouter = router({
         summary: 'Create Safe Transaction'
       }
     })
-    .input()
-    .output()
-    .mutation((req: any) => {})
+    .input(SafeTransactionDataSchema)
+    .output(SafeTransactionOutputSchema)
+    .mutation(async ({ input }) => {
+      const sdk = SafeSDK.getInstance()
+      return sdk.createTransaction(input, input.sender)
+    })
 
-  /*getTransction: publicProcedure.meta({}).input().output().query(),
+  /*getTransction: publicProcedure.meta({
+          openapi: {
+        path: '/safe/transaction',
+        method: 'POST',
+        description: 'Create Safe Transaction',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Create Safe Transaction'
+      }
+  }).input().output().query(),
 
-  getTransactions: publicProcedure.meta({}).input().output().query(),
+  getTransactions: publicProcedure.meta({
+          openapi: {
+        path: '/safe/transaction',
+        method: 'POST',
+        description: 'Create Safe Transaction',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Create Safe Transaction'
+      }
+  }).input().output().query(),
 
-  confirmTransaction: publicProcedure.meta({}).input().output().mutation(),
+  confirmTransaction: publicProcedure.meta({
+          openapi: {
+        path: '/safe/transaction',
+        method: 'POST',
+        description: 'Create Safe Transaction',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Create Safe Transaction'
+      }
+  }).input().output().mutation(),
 
-  rejectTransaction: publicProcedure.meta({}).input().output().mutation()
+  rejectTransaction: publicProcedure.meta({      openapi: {
+        path: '/safe/transaction',
+        method: 'POST',
+        description: 'Create Safe Transaction',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Create Safe Transaction'
+      }}).input().output().mutation()
   */
 })
 

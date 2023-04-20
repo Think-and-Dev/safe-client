@@ -1,5 +1,5 @@
 import Safe from '@safe-global/protocol-kit'
-import { SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
+import { SafeTransactionDataPartial, SafeTransactionOutput } from '@safe-global/safe-core-sdk-types'
 import { safeService } from '..'
 
 export default class SafeSDK {
@@ -26,7 +26,10 @@ export default class SafeSDK {
     })
   }
 
-  public async createTransaction(tx: SafeTransactionDataPartial, sender: string) {
+  public async createTransaction(
+    tx: SafeTransactionDataPartial,
+    sender: string
+  ): Promise<SafeTransactionOutput> {
     try {
       const transaction = await this.sdk!.createTransaction({
         safeTransactionData: tx
@@ -41,6 +44,10 @@ export default class SafeSDK {
         senderSignature: senderSignature.data,
         origin
       })
+      return {
+        status: 'OK',
+        message: 'SALIO BIEN!'
+      }
     } catch (error) {
       console.log('ERROR')
       console.log(error)
@@ -54,7 +61,7 @@ export default class SafeSDK {
   }
 
   public async getTransaction(txHash: string) {
-    const tx = await safeService.getTransaction(safeTxHash)
+    const tx = await safeService.getTransaction(txHash)
   }
 
   public async getPendingTransactions() {
