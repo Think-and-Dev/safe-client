@@ -22,7 +22,31 @@ const appRouter = router({
         id: req.input,
         message: `Hello, ${whoToGreet}`
       }
+    }),
+
+  createTransaction: publicProcedure
+    .meta({
+      openapi: {
+        path: '/safe/transaction',
+        method: 'POST',
+        description: 'Create Safe Transaction',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Create Safe Transaction'
+      }
     })
+    .input()
+    .output()
+    .mutation((req: any) => {})
+
+  /*getTransction: publicProcedure.meta({}).input().output().query(),
+
+  getTransactions: publicProcedure.meta({}).input().output().query(),
+
+  confirmTransaction: publicProcedure.meta({}).input().output().mutation(),
+
+  rejectTransaction: publicProcedure.meta({}).input().output().mutation()
+  */
 })
 
 export const adapter = getAdapter()
@@ -31,7 +55,10 @@ export const safeFactory = createSafeFactory(adapter)
 export const safeSDK = SafeSDK.getInstance()
 
 async function server() {
-  await safeSDK.initSDK(adapter, '0x38d8D1Cd4670AaCd61BAA1845003e97cDC42791a')
+  if (!process.env.SAFE_ADDRESS) {
+    throw new Error('PLEASE PROVIDE A SAFE ADDRESS')
+  }
+  await safeSDK.initSDK(adapter, process.env.SAFE_ADDRESS)
 
   const app = express()
 

@@ -1,23 +1,24 @@
 import { z } from 'zod'
 
-/**
- * --------------------------- USER SCHEMAS ---------------------------
- */
+/** 
+const safeTransactionData: SafeTransactionDataPartial = {
+  to,
+  data,
+  value,
+  operation, // Optional
+  safeTxGas, // Optional
+  baseGas, // Optional
+  gasPrice, // Optional
+  gasToken, // Optional
+  refundReceiver, // Optional
+  nonce // Optional
+}
+**/
 
-export const UserSchema = z.object({
-  id: z.string(),
-  nonce: z.string(),
-  publicAddress: z.string()
+export const SafeTransactionDataSchema = z.object({
+  to: z.string(),
+  data: z.string(),
+  value: z.string()
 })
 
-export type User = z.infer<typeof UserSchema>
-
-export const FindUserInputSchema = z.object({
-  publicAddress: z.string()
-})
-
-export type FindUserInput = z.infer<typeof FindUserInputSchema>
-
-export const FindUserOutputSchema = UserSchema
-
-export type FindUserOutput = z.infer<typeof FindUserOutputSchema>
+export type SafeTransactionData = z.infer<typeof SafeTransactionDataSchema>
