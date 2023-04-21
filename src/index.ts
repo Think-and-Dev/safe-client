@@ -13,25 +13,21 @@ import {
   SafeTransactionOutputSchema,
   GetTransactionSchema,
   GetTransactionOutputSchema,
-  GetTransactionOutputSchema2,
-  GetPendingTransactionOutputSchema
+  GetPendingTransactionOutputSchema,
+  ConfirmTransactionSchema,
+  ConfirmTransactionOutputSchema,
+  RejectTransactionSchema
 } from './config/schema'
 
 export type AppRouter = typeof appRouter
 
 const appRouter = router({
-  greet: publicProcedure
-    .input((val: unknown) => {
-      if (typeof val === 'string') return val
-      throw new Error(`Invalid input: ${typeof val}`)
-    })
-    .query((req: any) => {
-      const whoToGreet = req.input
-      return {
-        id: req.input,
-        message: `Hello, ${whoToGreet}`
-      }
-    }),
+  health: publicProcedure.query(() => {
+    return {
+      id: '200',
+      message: `Hello Safe Backend`
+    }
+  }),
 
   createTransaction: publicProcedure
     .meta({
@@ -97,26 +93,29 @@ const appRouter = router({
         summary: 'Confirm transaction'
       }
     })
-    .input()
-    .output()
-    .mutation()
+    .input(ConfirmTransactionSchema)
+    .output(ConfirmTransactionOutputSchema)
+    .mutation(async ({ input }) => {
+      const sdk = SafeSDK.getInstance()
+      return sdk.confirmTransaction(input)
+    })
 
-  /** 
-  rejectTransaction: publicProcedure
+  /**
+   * rejectTransaction: publicProcedure
     .meta({
       openapi: {
-        path: '/safe/transaction',
+        path: '/transaction/reject',
         method: 'POST',
-        description: 'Create Safe Transaction',
+        description: 'Reject Safe Transaction',
         tags: ['SAFE'],
         protect: false,
-        summary: 'Create Safe Transaction'
+        summary: 'Reject Safe Transaction'
       }
     })
-    .input()
+    .input(RejectTransactionSchema)
     .output()
     .mutation()
-**/
+  **/
 })
 
 export const adapter = getAdapter()

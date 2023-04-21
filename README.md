@@ -4,7 +4,15 @@
 
 ### Stack
 
+- Typescript
+- Express
+- [TRPC]()
+
 ### Resources
+
+- https://safe.global/core
+- https://docs.safe.global/
+- https://github.com/safe-global/safe-core-sdk/blob/main/guides/integrating-the-safe-core-sdk.md
 
 ---
 
@@ -18,18 +26,14 @@ yarn
 ### Run server
 
 ```bash
-
+yarn dev: server
 ```
 
-### Test
+### Endpoints
 
-```bash
+-
 
-```
-
-### Postman test collection
-
-### Query request
+### Query request example with TRPC
 
 - Get your input formatted where INPUT is a URI-encoded JSON string.
 

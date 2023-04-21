@@ -51,13 +51,6 @@ export const GetTransactionOutputSchema = z.object({
 
 export type GetTransactionOutput = z.infer<typeof GetTransactionOutputSchema>
 
-export const GetTransactionOutputSchema2 = z.object({
-  status: z.string(),
-  message: z.string()
-})
-
-export type GetTransactionOutput2 = z.infer<typeof GetTransactionOutputSchema2>
-
 export const GetPendingTransactionOutputSchema = z.object({
   count: z.number(),
   results: z.array(
@@ -72,3 +65,26 @@ export const GetPendingTransactionOutputSchema = z.object({
 })
 
 export type GetPendingTransactionsOutput = z.infer<typeof GetPendingTransactionOutputSchema>
+
+export const ConfirmTransactionSchema = z.object({
+  hash: z.string()
+})
+
+export type ConfirmTransactionInput = z.infer<typeof ConfirmTransactionSchema>
+
+export const ConfirmTransactionOutputSchema = z.object({
+  hash: z.string(),
+  nonce: z.union([z.number(), z.undefined()]),
+  to: z.union([z.string(), z.undefined()]),
+  from: z.union([z.string(), z.undefined()]),
+  blockNumber: z.union([z.number(), z.undefined()]),
+  confirmations: z.union([z.number(), z.undefined()])
+})
+
+export type ConfirmTransactionOutput = z.infer<typeof ConfirmTransactionOutputSchema>
+
+export const RejectTransactionSchema = z.object({
+  nonce: z.number()
+})
+
+export type RejectTransactionInput = z.infer<typeof RejectTransactionSchema>

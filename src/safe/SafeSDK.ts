@@ -1,11 +1,12 @@
 import Safe from '@safe-global/protocol-kit'
 import { SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
 import {
+  ConfirmTransactionInput,
   GetPendingTransactionsOutput,
   GetTransactionInput,
   GetTransactionOutput,
-  GetTransactionOutput2,
-  SafeTransactionOutput
+  SafeTransactionOutput,
+  ConfirmTransactionOutput
 } from '../config/schema'
 import { safeService } from '..'
 import { TRPCError } from '@trpc/server'
@@ -137,4 +138,40 @@ export default class SafeSDK {
       })
     }
   }
+
+  public async confirmTransaction(
+    input: ConfirmTransactionInput
+  ): Promise<ConfirmTransactionOutput> {
+    try {
+      const transaction = await safeService.getTransaction(input.hash)
+      const isValidTx = await this.sdk!.isValidTransaction(transaction)
+      if (isValidTx) {
+        const response = await this.sdk!.executeTransaction(transaction)
+        const { hash } = response
+        const receipt = response.transactionResponse && (await response.transactionResponse.wait())
+        return {
+          hash: response.hash,
+          nonce: response.transactionResponse?.nonce,
+          to: receipt?.to,
+          from: receipt?.to,
+          blockNumber: receipt?.blockNumber,
+          confirmations: receipt?.confirmations
+        }
+      } else {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          cause: input.hash,
+          message: 'Transaction is no longer valid'
+        })
+      }
+    } catch (error) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        cause: JSON.stringify(error),
+        message: 'Something went wrong when confirming transaction'
+      })
+    }
+  }
+
+  // public async rejectTransaction(): Promise<> {}
 }
