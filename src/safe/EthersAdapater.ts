@@ -4,14 +4,15 @@ import { getNetwork } from '../utils'
 
 export const getAdapter = () => {
   const network = getNetwork()
-  console.log('NETWORK')
-  console.log(network)
 
   if (!process.env.ALCHEMY_KEY) {
     throw new Error('PLEASE PROVIDE A VALID ALCHEMY KEY')
   }
 
-  const provider = new ethers.providers.AlchemyProvider('goerli', process.env.ALCHEMY_KEY)
+  const provider = new ethers.providers.AlchemyProvider(
+    network.toLowerCase(),
+    process.env.ALCHEMY_KEY
+  )
 
   if (!process.env.PRIVATE_KEY) {
     throw new Error('PLEASE PROVIDE A VALID PRIVATE_KEY')

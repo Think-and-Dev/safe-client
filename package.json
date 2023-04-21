@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "dev:server": "nodemon -e ts -w . -x ts-node ./src/index.ts",
-    "dev:client": "nodemon -e ts -w . -x npm run start-client-dev",
     "dev": "run-p dev:* --print-label",
     "build": "tsc",
     "start": "yarn dev",

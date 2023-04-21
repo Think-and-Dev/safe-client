@@ -6,11 +6,18 @@ export const getNetwork = (): NETWORKS => {
   if (!process.env.NETWORK_ENV) {
     throw Error('PLEASE PROVIDE A NETWORK ENV')
   } else {
-    const network = NETWORKS[process.env.NETWORK_ENV as string]
-    if (!network) {
-      throw Error('PLEASE PROVIDE A VALID NETWORK')
+    switch (process.env.NETWORK_ENV) {
+      case 'MAINNET':
+        return NETWORKS.MAINNET
+      case 'POLYGON':
+        return NETWORKS.POLYGON
+      case 'MUMBAI':
+        return NETWORKS.MUMBAI
+      case 'GOERLI':
+        return NETWORKS.GOERLI
+      default:
+        throw Error('INVALID NETWORK')
     }
-    return network
   }
 }
 

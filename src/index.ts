@@ -8,7 +8,14 @@ import { getSafeService } from './safe/SafeApiKit'
 import { createSafeFactory } from './safe/SafeFactory'
 import SafeSDK from './safe/SafeSDK'
 
-import { SafeTransactionDataSchema, SafeTransactionOutputSchema } from './config/schema'
+import {
+  SafeTransactionDataSchema,
+  SafeTransactionOutputSchema,
+  GetTransactionSchema,
+  GetTransactionOutputSchema,
+  GetTransactionOutputSchema2,
+  GetPendingTransactionOutputSchema
+} from './config/schema'
 
 export type AppRouter = typeof appRouter
 
@@ -29,7 +36,7 @@ const appRouter = router({
   createTransaction: publicProcedure
     .meta({
       openapi: {
-        path: '/safe/transaction',
+        path: '/transaction',
         method: 'POST',
         description: 'Create Safe Transaction',
         tags: ['SAFE'],
@@ -42,10 +49,62 @@ const appRouter = router({
     .mutation(async ({ input }) => {
       const sdk = SafeSDK.getInstance()
       return sdk.createTransaction(input, input.sender)
+    }),
+
+  getTransaction: publicProcedure
+    .meta({
+      openapi: {
+        path: '/transaction',
+        method: 'GET',
+        description: 'Get transaction',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Get transaction by tx hash'
+      }
     })
+    .input(GetTransactionSchema)
+    .output(GetTransactionOutputSchema)
+    .query(async ({ input }) => {
+      const sdk = SafeSDK.getInstance()
+      return sdk.getTransaction(input)
+    }),
 
-  /*getTransction: publicProcedure.meta({
-          openapi: {
+  getPendingTransactions: publicProcedure
+    .meta({
+      openapi: {
+        path: '/pending-transactions',
+        method: 'GET',
+        description: 'Get Pending Transactions',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Get pending transactions'
+      }
+    })
+    .output(GetPendingTransactionOutputSchema)
+    .query(() => {
+      const sdk = SafeSDK.getInstance()
+      return sdk.getPendingTransactions()
+    }),
+
+  confirmTransaction: publicProcedure
+    .meta({
+      openapi: {
+        path: '/transaction/confirm',
+        method: 'POST',
+        description: 'Confirm transaction',
+        tags: ['SAFE'],
+        protect: false,
+        summary: 'Confirm transaction'
+      }
+    })
+    .input()
+    .output()
+    .mutation()
+
+  /** 
+  rejectTransaction: publicProcedure
+    .meta({
+      openapi: {
         path: '/safe/transaction',
         method: 'POST',
         description: 'Create Safe Transaction',
@@ -53,39 +112,11 @@ const appRouter = router({
         protect: false,
         summary: 'Create Safe Transaction'
       }
-  }).input().output().query(),
-
-  getTransactions: publicProcedure.meta({
-          openapi: {
-        path: '/safe/transaction',
-        method: 'POST',
-        description: 'Create Safe Transaction',
-        tags: ['SAFE'],
-        protect: false,
-        summary: 'Create Safe Transaction'
-      }
-  }).input().output().query(),
-
-  confirmTransaction: publicProcedure.meta({
-          openapi: {
-        path: '/safe/transaction',
-        method: 'POST',
-        description: 'Create Safe Transaction',
-        tags: ['SAFE'],
-        protect: false,
-        summary: 'Create Safe Transaction'
-      }
-  }).input().output().mutation(),
-
-  rejectTransaction: publicProcedure.meta({      openapi: {
-        path: '/safe/transaction',
-        method: 'POST',
-        description: 'Create Safe Transaction',
-        tags: ['SAFE'],
-        protect: false,
-        summary: 'Create Safe Transaction'
-      }}).input().output().mutation()
-  */
+    })
+    .input()
+    .output()
+    .mutation()
+**/
 })
 
 export const adapter = getAdapter()
@@ -102,13 +133,12 @@ async function server() {
   const app = express()
 
   app.use((req, _res, next) => {
-    // request logger
     console.log('⬅️ ', req.method, req.path, req.body ?? req.query)
     next()
   })
 
   app.use(
-    '/trpc',
+    '/safe',
     trpcExpress.createExpressMiddleware({
       router: appRouter,
       createContext
