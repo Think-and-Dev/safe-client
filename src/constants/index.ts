@@ -19,19 +19,19 @@ export const NETWORK_NAMES = new Map([
 
 export const providers = {
   MAINNET: {
-    chainName: 'Ethereum',
+    chainName: 'ethereum',
     chainId: '0x1',
     nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
     rpcUrl: process.env.MAINNET_RPC_URL ? process.env.MAINNET_RPC_URL : 'https://rpc.ankr.com/eth'
   },
   POLYGON: {
-    chainName: 'Polygon Mainnet',
+    chainName: 'polygon',
     chainId: '0x89',
     nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
     rpcUrl: process.env.POLYGON_RPC_URL ? process.env.POLYGON_RPC_URL : 'https://polygon-rpc.com/'
   },
   GOERLI: {
-    chaiName: 'Goerli',
+    chaiName: 'goerli',
     chainId: '0x5',
     nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
     rpcUrl: process.env.GOERLI_RPC_URL
@@ -39,7 +39,7 @@ export const providers = {
       : 'https://goerli.blockpi.network/v1/rpc/public'
   },
   MUMBAI: {
-    chainName: 'Mumbai',
+    chainName: 'mumbai',
     chainId: '0x13881',
     nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
     rpcUrl: process.env.MUMBAI_RPC_URL

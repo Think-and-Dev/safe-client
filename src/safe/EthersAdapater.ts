@@ -1,13 +1,17 @@
 import { ethers } from 'ethers'
 import { EthersAdapter } from '@safe-global/protocol-kit'
-import { getProviderURL } from '../utils'
+import { getNetwork } from '../utils'
 
 export const getAdapter = () => {
-  const providerURL = getProviderURL()
+  const network = getNetwork()
+
+  if (!process.env.ALCHEMY_KEY) {
+    throw new Error('PLEASE PROVIDE A VALID ALCHEMY KEY')
+  }
 
   const provider = new ethers.providers.AlchemyProvider(
-    'goerli',
-    'RkWmMzfkiw5U2w7rehINeymfAb6lT4ho'
+    network.toLowerCase(),
+    process.env.ALCHEMY_KEY
   )
 
   if (!process.env.PRIVATE_KEY) {
