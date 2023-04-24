@@ -173,8 +173,8 @@ async function server() {
   )
 
   // Serve Swagger UI with our OpenAPI schema
-  app.use('/', swaggerUi.serve)
-  app.get('/api-docs', swaggerUi.setup(openApiDocument))
+  //app.use('/', swaggerUi.serve)
+  //app.get('/api-docs', swaggerUi.setup(openApiDocument))
 
   app.listen(2021, () => {
     console.log('listening on port 2021')
