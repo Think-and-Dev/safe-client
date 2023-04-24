@@ -1,11 +1,15 @@
 import express from 'express'
+import { z } from 'zod'
 import * as trpcExpress from '@trpc/server/adapters/express'
+import { createOpenApiExpressMiddleware } from 'trpc-openapi'
+import swaggerUi from 'swagger-ui-express'
 
 import { router, publicProcedure } from './server/trpc'
 import { createContext } from './server/context'
 import { getAdapter } from './safe/EthersAdapater'
 import { getSafeService } from './safe/SafeApiKit'
 import { createSafeFactory } from './safe/SafeFactory'
+import { openApiDocument } from './scripts/openApi'
 import SafeSDK from './safe/SafeSDK'
 
 import {
@@ -21,13 +25,28 @@ import {
 
 export type AppRouter = typeof appRouter
 
-const appRouter = router({
-  health: publicProcedure.query(() => {
-    return {
-      id: '200',
-      message: `Hello Safe Backend`
-    }
-  }),
+export const appRouter = router({
+  health: publicProcedure
+    .meta({
+      openapi: {
+        path: '/ping_health',
+        method: 'GET',
+        tags: ['SAFE']
+      }
+    })
+    .input(z.void())
+    .output(
+      z.object({
+        id: z.string(),
+        message: z.string()
+      })
+    )
+    .query(() => {
+      return {
+        id: '200',
+        message: `Hello Safe Backend`
+      }
+    }),
 
   createTransaction: publicProcedure
     .meta({
@@ -76,6 +95,7 @@ const appRouter = router({
         summary: 'Get pending transactions'
       }
     })
+    .input(z.void()) // no input expected
     .output(GetPendingTransactionOutputSchema)
     .query(() => {
       const sdk = SafeSDK.getInstance()
@@ -137,14 +157,24 @@ async function server() {
   })
 
   app.use(
-    '/safe',
+    '/safe/trpc',
     trpcExpress.createExpressMiddleware({
       router: appRouter,
       createContext
     })
   )
 
-  app.get('/', (_req, res) => res.send('hello'))
+  app.use(
+    '/safe',
+    createOpenApiExpressMiddleware({
+      router: appRouter,
+      createContext
+    })
+  )
+
+  // Serve Swagger UI with our OpenAPI schema
+  app.use('/', swaggerUi.serve)
+  app.get('/api-docs', swaggerUi.setup(openApiDocument))
 
   app.listen(2021, () => {
     console.log('listening on port 2021')

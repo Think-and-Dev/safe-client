@@ -4,6 +4,7 @@
 
 ### Stack
 
+- Node v18
 - Typescript
 - Express
 - [TRPC]()
@@ -31,7 +32,13 @@ yarn dev: server
 
 ### Endpoints
 
--
+- Create transaction: Create Safe transaction. This will mean it will get proposed to the network.
+
+- Get transaction: Get transaction details by knowing tx hash.
+
+- Get pending transactions: Get all pending transactions.
+
+- Confirm transaction: Accept a transaction. Fot that purpose a valid signer|owner of the safe must be provided.
 
 ### Query request example with TRPC
 
