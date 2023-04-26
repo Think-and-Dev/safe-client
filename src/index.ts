@@ -2,14 +2,11 @@ import express from 'express'
 import { z } from 'zod'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { createOpenApiExpressMiddleware } from 'trpc-openapi'
-import swaggerUi from 'swagger-ui-express'
-
 import { router, publicProcedure } from './server/trpc'
 import { createContext } from './server/context'
 import { getAdapter } from './safe/EthersAdapater'
 import { getSafeService } from './safe/SafeApiKit'
 import { createSafeFactory } from './safe/SafeFactory'
-import { openApiDocument } from './scripts/openApi'
 import SafeSDK from './safe/SafeSDK'
 
 import {
@@ -22,8 +19,6 @@ import {
   ConfirmTransactionOutputSchema,
   GetOwnersOutputSchema
 } from './config/schema'
-
-export type AppRouter = typeof appRouter
 
 export const appRouter = router({
   health: publicProcedure
@@ -173,13 +168,11 @@ async function server() {
     })
   )
 
-  // Serve Swagger UI with our OpenAPI schema
-  //app.use('/', swaggerUi.serve)
-  //app.get('/api-docs', swaggerUi.setup(openApiDocument))
-
   app.listen(2021, () => {
     console.log('listening on port 2021')
   })
 }
+
+export type AppRouter = typeof appRouter
 
 server()

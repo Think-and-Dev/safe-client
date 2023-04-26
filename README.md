@@ -33,13 +33,15 @@ yarn dev: server
 
 ### Endpoints
 
-- Create transaction: Create Safe transaction. This will mean it will get proposed to the network.
+- **Get Owners**: Get Safe Owners addresses.
 
-- Get transaction: Get transaction details by knowing tx hash.
+- **Create transaction**: Create Safe transaction. This will mean it will get proposed to the network.
 
-- Get pending transactions: Get all pending transactions.
+- **Get transaction**: Get transaction details by knowing tx hash.
 
-- Confirm transaction: Accept a transaction. Fot that purpose a valid signer|owner of the safe must be provided.
+- **Get pending transactions**: Get all pending transactions.
+
+- **Confirm transaction**: Accept a transaction. Fot that purpose a valid signer|owner of the safe must be provided.
 
 - Postman collection could be found on /src/postman.
 
@@ -88,6 +90,3 @@ curl --location 'localhost:2021/trpc/greet?input=%2522hola%2522'
 ```
 
 ---
-
-ADD ON
-Y GET OWNERS

@@ -59,7 +59,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:2021/safe/transaction?hash=0xe7c7f7d345cf87d988e21c2fc3b8117506f4c5b0f09b3e566833f5ca7c015c1f",
+					"raw": "localhost:2021/safe/transaction?hash=0x5ab04c664d28558ae0fbc8cc7c50d705245a951cfcf6c9ac82d3c888c46a047b",
 					"host": [
 						"localhost"
 					],
@@ -71,7 +71,7 @@
 					"query": [
 						{
 							"key": "hash",
-							"value": "0xe7c7f7d345cf87d988e21c2fc3b8117506f4c5b0f09b3e566833f5ca7c015c1f"
+							"value": "0x5ab04c664d28558ae0fbc8cc7c50d705245a951cfcf6c9ac82d3c888c46a047b"
 						}
 					]
 				}
@@ -104,7 +104,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"hash\": \"0xe7c7f7d345cf87d988e21c2fc3b8117506f4c5b0f09b3e566833f5ca7c015c1f\"\n}",
+					"raw": "{\n    \"hash\": \"0x5ab04c664d28558ae0fbc8cc7c50d705245a951cfcf6c9ac82d3c888c46a047b\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -121,6 +121,25 @@
 						"safe",
 						"transaction",
 						"confirm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Owners",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:2021/safe/owners",
+					"host": [
+						"localhost"
+					],
+					"port": "2021",
+					"path": [
+						"safe",
+						"owners"
 					]
 				}
 			},
