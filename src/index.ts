@@ -20,7 +20,7 @@ import {
   GetPendingTransactionOutputSchema,
   ConfirmTransactionSchema,
   ConfirmTransactionOutputSchema,
-  RejectTransactionSchema
+  GetOwnersOutputSchema
 } from './config/schema'
 
 export type AppRouter = typeof appRouter
@@ -118,24 +118,25 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       const sdk = SafeSDK.getInstance()
       return sdk.confirmTransaction(input)
-    })
+    }),
 
-  /**
-   * rejectTransaction: publicProcedure
+  getOwners: publicProcedure
     .meta({
       openapi: {
-        path: '/transaction/reject',
-        method: 'POST',
-        description: 'Reject Safe Transaction',
+        path: '/owners',
+        method: 'GET',
+        description: 'Get Safe Owners',
         tags: ['SAFE'],
         protect: false,
-        summary: 'Reject Safe Transaction'
+        summary: 'Get Safe Owners'
       }
     })
-    .input(RejectTransactionSchema)
-    .output()
-    .mutation()
-  **/
+    .input(z.void())
+    .output(GetOwnersOutputSchema)
+    .query(async ({}) => {
+      const sdk = SafeSDK.getInstance()
+      return sdk.getSafeOwners()
+    })
 })
 
 export const adapter = getAdapter()
