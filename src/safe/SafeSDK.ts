@@ -6,7 +6,8 @@ import {
   GetTransactionInput,
   GetTransactionOutput,
   SafeTransactionOutput,
-  ConfirmTransactionOutput
+  ConfirmTransactionOutput,
+  GetOwnersOutput
 } from '../config/schema'
 import { safeService } from '..'
 import { TRPCError } from '@trpc/server'
@@ -147,7 +148,6 @@ export default class SafeSDK {
       const isValidTx = await this.sdk!.isValidTransaction(transaction)
       if (isValidTx) {
         const response = await this.sdk!.executeTransaction(transaction)
-        const { hash } = response
         const receipt = response.transactionResponse && (await response.transactionResponse.wait())
         return {
           hash: response.hash,
@@ -173,5 +173,20 @@ export default class SafeSDK {
     }
   }
 
-  // public async rejectTransaction(): Promise<> {}
+  public async getSafeOwners(): Promise<GetOwnersOutput> {
+    const owners: string[] | undefined = await this.sdk?.getOwners()
+    console.log('OWNERS')
+    console.log(owners)
+    if (owners) {
+      return {
+        count: owners.length,
+        owners
+      }
+    } else {
+      return {
+        count: 0,
+        owners: []
+      }
+    }
+  }
 }

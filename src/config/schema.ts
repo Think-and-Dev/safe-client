@@ -88,3 +88,10 @@ export const RejectTransactionSchema = z.object({
 })
 
 export type RejectTransactionInput = z.infer<typeof RejectTransactionSchema>
+
+export const GetOwnersOutputSchema = z.object({
+  count: z.number(),
+  owners: z.string().array()
+})
+
+export type GetOwnersOutput = z.infer<typeof GetOwnersOutputSchema>

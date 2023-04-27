@@ -2,14 +2,11 @@ import express from 'express'
 import { z } from 'zod'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { createOpenApiExpressMiddleware } from 'trpc-openapi'
-import swaggerUi from 'swagger-ui-express'
-
 import { router, publicProcedure } from './server/trpc'
 import { createContext } from './server/context'
 import { getAdapter } from './safe/EthersAdapater'
 import { getSafeService } from './safe/SafeApiKit'
 import { createSafeFactory } from './safe/SafeFactory'
-import { openApiDocument } from './scripts/openApi'
 import SafeSDK from './safe/SafeSDK'
 
 import {
@@ -20,10 +17,8 @@ import {
   GetPendingTransactionOutputSchema,
   ConfirmTransactionSchema,
   ConfirmTransactionOutputSchema,
-  RejectTransactionSchema
+  GetOwnersOutputSchema
 } from './config/schema'
-
-export type AppRouter = typeof appRouter
 
 export const appRouter = router({
   health: publicProcedure
@@ -118,24 +113,25 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       const sdk = SafeSDK.getInstance()
       return sdk.confirmTransaction(input)
-    })
+    }),
 
-  /**
-   * rejectTransaction: publicProcedure
+  getOwners: publicProcedure
     .meta({
       openapi: {
-        path: '/transaction/reject',
-        method: 'POST',
-        description: 'Reject Safe Transaction',
+        path: '/owners',
+        method: 'GET',
+        description: 'Get Safe Owners',
         tags: ['SAFE'],
         protect: false,
-        summary: 'Reject Safe Transaction'
+        summary: 'Get Safe Owners'
       }
     })
-    .input(RejectTransactionSchema)
-    .output()
-    .mutation()
-  **/
+    .input(z.void())
+    .output(GetOwnersOutputSchema)
+    .query(async ({}) => {
+      const sdk = SafeSDK.getInstance()
+      return sdk.getSafeOwners()
+    })
 })
 
 export const adapter = getAdapter()
@@ -172,13 +168,11 @@ async function server() {
     })
   )
 
-  // Serve Swagger UI with our OpenAPI schema
-  //app.use('/', swaggerUi.serve)
-  //app.get('/api-docs', swaggerUi.setup(openApiDocument))
-
   app.listen(2021, () => {
     console.log('listening on port 2021')
   })
 }
+
+export type AppRouter = typeof appRouter
 
 server()
