@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "3ceb8a04-1ebc-4ef1-915e-b0fa20b46d08",
+		"name": "Aconcagua",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11215430"
+	},
+	"item": [
+		{
+			"name": "PING HEALTH",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:2021/safe/ping_health",
+					"host": [
+						"localhost"
+					],
+					"port": "2021",
+					"path": [
+						"safe",
+						"ping_health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE TX",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"to\": \"0xcB2d64553283B972eA75890C8c811d8835d1F04c\",\n    \"data\": \"0x\",\n    \"value\": \"5000\",\n    \"sender\": \"0x153073310327caA6abB76F735d115E5c8bA1617B\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2021/safe/transaction",
+					"host": [
+						"localhost"
+					],
+					"port": "2021",
+					"path": [
+						"safe",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET TRANSACTION",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:2021/safe/transaction?hash=0x5ab04c664d28558ae0fbc8cc7c50d705245a951cfcf6c9ac82d3c888c46a047b",
+					"host": [
+						"localhost"
+					],
+					"port": "2021",
+					"path": [
+						"safe",
+						"transaction"
+					],
+					"query": [
+						{
+							"key": "hash",
+							"value": "0x5ab04c664d28558ae0fbc8cc7c50d705245a951cfcf6c9ac82d3c888c46a047b"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET PENDING TRANSACTIONS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:2021/safe/pending-transactions",
+					"host": [
+						"localhost"
+					],
+					"port": "2021",
+					"path": [
+						"safe",
+						"pending-transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CONFIRM TRANSACTION",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"hash\": \"0x5ab04c664d28558ae0fbc8cc7c50d705245a951cfcf6c9ac82d3c888c46a047b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2021/safe/transaction/confirm",
+					"host": [
+						"localhost"
+					],
+					"port": "2021",
+					"path": [
+						"safe",
+						"transaction",
+						"confirm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Owners",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:2021/safe/owners",
+					"host": [
+						"localhost"
+					],
+					"port": "2021",
+					"path": [
+						"safe",
+						"owners"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
